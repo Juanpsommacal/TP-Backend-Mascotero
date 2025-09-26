@@ -15,7 +15,6 @@ export const loginService = async (userData) => {
 
     const userFound = await User.findOne({email})
 
-
     if(!userFound){
         const error = new Error("User or password is incorrect")
         error.statusCode = 400

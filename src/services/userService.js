@@ -1,4 +1,5 @@
 import User from "../models/userModel.js";
+import logger from "../core/logger.js";
 
 
 export const createUserService = async (userData) => {
@@ -20,7 +21,7 @@ export const createUserService = async (userData) => {
 
 export const getUserByIdService = async(userData) => {
     const { userId } = userData
-    console.log(userId)
+
     const user = await User.findById(userId)
 
     if(!user){
@@ -30,8 +31,9 @@ export const getUserByIdService = async(userData) => {
     return {
         userId: user._id,
         name: user.name,
-        lastname: user.lastName,
-        email: user.email
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone
     }
 }
 

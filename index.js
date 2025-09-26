@@ -5,6 +5,7 @@ import cors from 'cors';
 import logger from './src/core/logger.js';
 import {userRoute} from "./src/routers/userRouter.js";
 import { connectDB } from './src/core/db.js';
+import {loginRoute} from "./src/routers/loginRouter.js";
 
 const app = express()
 const PORT = process.env.PORT || 3000;
@@ -36,10 +37,7 @@ app.use(
 
 // Rutas
 app.use("/api/user", userRoute)
-// app.use("/api", loginRoute)
-// app.use('/api/email', emailRoute);
-// app.use('/api/chat', chatRoute)
-// app.use('/api/start', startRouter)
+app.use("/api", loginRoute)
 
 
 const server = app.listen(PORT, () => {
