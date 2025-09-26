@@ -62,4 +62,4 @@ userSchema.pre("save", function (next) {
     next()
 })
 
-export default mongoose.model("lol-coach-users-utn", userSchema)
+export default mongoose.model("users", userSchema)

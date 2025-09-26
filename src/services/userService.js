@@ -1,5 +1,4 @@
 import User from "../models/userModel.js";
-import logger from "../core/logger.js";
 
 
 export const createUserService = async (userData) => {
@@ -16,7 +15,6 @@ export const createUserService = async (userData) => {
     }
 
     const user = await userData.save()
-    await createUserNotificationEmail(email)
     return { message: "Usuario creado", content: user}
 }
 

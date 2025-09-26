@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import session from 'express-session'
 import cors from 'cors';
 import logger from './src/core/logger.js';
+import {userRoute} from "./src/routers/userRouter.js";
+import { connectDB } from './src/core/db.js';
 
 const app = express()
 const PORT = process.env.PORT || 3000;
@@ -10,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 
 // Conectar a la base de datos
-// connectDB();
+connectDB();
 
 
 app.use(cors({
@@ -33,7 +35,7 @@ app.use(
 )
 
 // Rutas
-// app.use("/api/user", userRoute)
+app.use("/api/user", userRoute)
 // app.use("/api", loginRoute)
 // app.use('/api/email', emailRoute);
 // app.use('/api/chat', chatRoute)
