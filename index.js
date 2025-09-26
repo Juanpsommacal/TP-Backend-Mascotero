@@ -6,6 +6,7 @@ import logger from './src/core/logger.js';
 import {userRoute} from "./src/routers/userRouter.js";
 import { connectDB } from './src/core/db.js';
 import {loginRoute} from "./src/routers/loginRouter.js";
+import {productosRoute} from "./src/routers/productosRouter.js";
 
 const app = express()
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use(
 // Rutas
 app.use("/api/user", userRoute)
 app.use("/api", loginRoute)
+app.use("/api/productos", productosRoute)
 
 
 const server = app.listen(PORT, () => {
