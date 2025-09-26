@@ -5,8 +5,16 @@ import {loginService} from "../services/loginService.js";
 export const login = async (req, res) => {
     try {
         const userData = req.body
-        const result = await loginService(userData)
-        return res.status(200).json(result);
+        const { token, user } = await loginService(userData)
+        
+        res.cookie('accessToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Solo en producción
+            sameSite: 'strict', // O 'lax'
+            maxAge: 1000 * 60 * 60 // 1 hora
+        });
+
+        return res.status(200).json({ message: "Logged in successfully", user });
     } catch (err){
         if (err.statusCode === 401){
             return res.status(401).json({ message: "Error de credenciales", err});
@@ -15,3 +23,33 @@ export const login = async (req, res) => {
     }
 
 }
+
+export const checkAuthStatus = async (req, res) => {
+    try {
+        // Si el middleware verifyTokenMiddleware tuvo éxito, req.user ya está poblado.
+        // Simplemente devolvemos la información del usuario al frontend.
+        const user = req.user;
+        return res.status(200).json({
+            isAuthenticated: true,
+            user: {
+                id: user.userId,
+                email: user.userEmail
+            }
+        });
+    } catch (err) {
+        return res.status(500).json({ message: "Error interno del servidor", err: err.message });
+    }
+};
+
+export const logout = (req, res) => {
+    try {
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+        });
+        return res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: "Error interno del servidor", error: error.message });
+    }
+};

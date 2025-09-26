@@ -2,18 +2,13 @@ import {verifyToken} from '../utils/verifyToken.js'
 
 export const verifyTokenMiddleware = (req, res, next) => {
     try {
-        // Leer el token de la sesion del backend
+        // Leer el token desde las cookies
+        const token = req.cookies.accessToken;
 
-        const authHeader = req.headers.authorization;
-
-        // Si no hay token o el token no empieza con bearer, falla
-        if(!authHeader || !authHeader.startsWith("Bearer ")){
-            return res.status(400).json({ message: "Token de acceso no proporcionado" })
+        // Si no hay token, el acceso es denegado
+        if(!token){
+            return res.status(401).json({ message: "Acceso denegado. Se requiere token." })
         }
-
-        // Separar bearer del resto del token y tomamos solo el token
-        // con split separo bearer de daljsdlkjaldjl -> "Bearer daljsdlkjaldjl"
-        const token = authHeader.split(" ")[1]
 
         // El mismo sistema que lo firmó es quien puede verificar si es valido o no el token
         req.user = verifyToken(token)

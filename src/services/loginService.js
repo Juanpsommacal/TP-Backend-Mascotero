@@ -35,5 +35,13 @@ export const loginService = async (userData) => {
 
     const token = jwt.sign(payload, "secret", { expiresIn: "1h" })
 
-    return {message: "Logged in", token}
+    const userResponse = {
+        id: userFound._id,
+        email: userFound.email,
+        name: userFound.name,
+        lastName: userFound.lastName,
+        phone: userFound.phone
+    };
+
+    return {message: "Logged in", token, user: userResponse}
 }
