@@ -32,13 +32,19 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "secret",
-        resave: false,
-        saveUninitialized: false,
-    })
-);
+app.use(session({
+    secret: process.env.SESSION_SECRET || "secret",
+    resave: false,
+    saveUninitialized: false,
+    proxy: true, // importante detrás de proxy
+    cookie: {
+        httpOnly: true,
+        sameSite: 'none', // cross-site
+        secure: true,     // HTTPS obligatorio
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
+}));
 
 // Rutas
 app.use("/api/user", userRoute);
