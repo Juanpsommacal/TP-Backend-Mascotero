@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 app.use(cors({
-    origin: ['http://localhost:5173', "https://delivery-mascotero.netlify.app/"], // Permitir explícitamente el origen del frontend
+    origin: ['http://localhost:5173', "https://delivery-mascotero.netlify.app"], // Permitir explícitamente el origen del frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
