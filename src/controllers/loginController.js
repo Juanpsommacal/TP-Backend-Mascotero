@@ -1,4 +1,6 @@
 import {loginService} from "../services/loginService.js";
+import logger from "../core/logger.js";
+import util from "util";
 
 
 
@@ -29,11 +31,15 @@ export const checkAuthStatus = async (req, res) => {
         // Si el middleware verifyTokenMiddleware tuvo éxito, req.user ya está poblado.
         // Simplemente devolvemos la información del usuario al frontend.
         const user = req.user;
+        // logger.info(util.inspect(user, { showHidden: false, depth: null, colors: false }));
         return res.status(200).json({
             isAuthenticated: true,
             user: {
-                id: user.userId,
-                email: user.userEmail
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    lastName: user.lastName,
+                    phone: user.phone
             }
         });
     } catch (err) {
