@@ -16,6 +16,9 @@ const PORT = process.env.PORT || 3000;
 // Conectar a la base de datos
 connectDB();
 
+// Necesario para que cookies 'secure' funcionen detrás de proxy (Render/Heroku)
+app.set('trust proxy', 1);
+
 app.use(cors({
     origin: ['http://localhost:5173', "https://delivery-mascotero.netlify.app"], // Permitir explícitamente el origen del frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
