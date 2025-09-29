@@ -42,3 +42,8 @@ export const deleteUserService = async(id) => {
     await User.findByIdAndDelete(id)
     return {message: 'Usuario eliminado'}
 }
+
+export const updateUserService = async(id, userData) => {
+    const user = await User.findByIdAndUpdate(id, userData)
+    return {message: 'Usuario actualizado', content: user}
+}
