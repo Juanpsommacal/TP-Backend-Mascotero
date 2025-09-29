@@ -28,9 +28,6 @@ const pedidosSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Ensure a unique index on pedidoId (safety)
-pedidosSchema.index({ pedidoId: 1 }, { unique: true });
-
 // Counter schema/model for atomic auto-increment
 const counterSchema = new mongoose.Schema({
   _id: { type: String, required: true }, // sequence name, e.g., 'pedidoId'
