@@ -8,6 +8,7 @@ import { userRoute } from "./src/routers/userRouter.js";
 import { connectDB } from './src/core/db.js';
 import { loginRoute } from "./src/routers/loginRouter.js";
 import { productosRoute } from "./src/routers/productosRouter.js";
+import {pedidoRoute} from "./src/routers/pedidoRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +41,7 @@ app.use(
 app.use("/api/user", userRoute);
 app.use("/api", loginRoute);
 app.use("/api/productos", productosRoute);
+app.use("/api/pedido", pedidoRoute);
 
 const server = app.listen(PORT, () => {
     logger.info(`Servidor corriendo en el puerto ${PORT}`);
