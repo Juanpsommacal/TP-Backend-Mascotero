@@ -4,6 +4,7 @@ export const verifyTokenMiddleware = (req, res, next) => {
     try {
         // Leer el token desde las cookies
         const token = req.cookies.accessToken;
+        console.log(token)
 
         // Si no hay token, el acceso es denegado
         if(!token){

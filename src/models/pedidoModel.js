@@ -9,7 +9,8 @@ const pedidosSchema = new mongoose.Schema({
     },
 
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
         required: true
     },
     items:{
