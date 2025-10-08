@@ -20,10 +20,6 @@ const pedidosSchema = new mongoose.Schema({
     total:{
         type: Number,
         required: true
-    },
-    userPhone:{
-        type: Number,
-        required: true
     }
 }, {
     timestamps: true
