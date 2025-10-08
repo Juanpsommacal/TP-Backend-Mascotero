@@ -17,7 +17,7 @@ export const createPedido = async (req, res) => {
 
 export const getPedidos = async (req, res) => {
     try {
-        const pedidos = await Pedido.find({}).populate('userId');
+        const pedidos = await Pedido.find({}).populate('userId', 'name lastName email phone');
         return res.status(200).json(pedidos);
     } catch (error) {
         console.log(error.message);
