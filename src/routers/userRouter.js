@@ -11,4 +11,7 @@ export const userRoute = express.Router()
 userRoute.post("/create", createUser)
 userRoute.get("/user/:id", verifyTokenMiddleware, getUserById)
 userRoute.delete("/delete/:id", verifyTokenMiddleware, deleteUser)
-userRoute.put("/update/:id", verifyTokenMiddleware, updateUser)
+userRoute.patch("/update/:id", verifyTokenMiddleware, updateUser)
+
+
+// "/api/user"
