@@ -16,8 +16,6 @@ API backend para gestión de usuarios, productos y pedidos con autenticación v�
 - [Base de datos y modelos](#-base-de-datos-y-modelos)
 - [Autenticación](#-autenticación)
 - [Endpoints](#-endpoints)
-- [Ejemplos de uso con curl](#-ejemplos-de-uso-con-curl)
-- [Notas](#-notas)
 
 ## 🚀 Tecnologías usadas
 - Node.js + Express
@@ -42,7 +40,7 @@ npm install
 ```
 3) Crear archivo `.env` en la raíz con al menos:
 ```
-MONGO_DB_CONNECTION_STRING=mongodb://localhost:27017/mascotero
+MONGO_DB_CONNECTION_STRING=""
 ```
 4) Levantar el servidor:
 ```
@@ -76,12 +74,17 @@ backend-mascotero-utn/
 │  │  ├─ pedidoRouter.js
 │  │  ├─ productosRouter.js
 │  │  └─ userRouter.js
+|  |─ utils/
+│  │  ├─ validators.js
+│  │  └─ verifyToken.js
 │  └─ services/
 │     ├─ loginService.js
 │     ├─ pedidoService.js
 │     ├─ productosService.js    # (si existe; usado por controller)
 │     └─ userService.js
 └─ .gitignore
+└─ .env
+└─ index.js
 ```
 
 ## 🗄️ Base de datos y modelos
@@ -105,10 +108,9 @@ Campos principales:
 
 ### 📦 Modelo Pedido (`src/models/pedidoModel.js`)
 - pedidoId: Number, required, unique, index, asignado automáticamente e incremental (1,2,3,...) mediante colección `counters` y hook `pre('validate')`.
-- userId: String, required
+- userId: mongoose.Schema.Types.ObjectId, -> Relacion con userModel
 - items: Array, required
 - total: Number, required
-- userPhone: Number, required
 - timestamps: true
 - Nota: Se mantiene el `_id` de Mongo (ObjectId) además de `pedidoId`.
 
@@ -128,16 +130,6 @@ A menos que se indique, el Content-Type es `application/json`.
     { "email": "test@example.com", "password": "Password1" }
     ```
   - Respuesta: `{ message, user }` y setea cookie.
-
-- GET `/api/auth/status`
-  - Cookies: Requiere cookie `accessToken` (enviada por el cliente).
-  - Body: ninguno.
-  - Respuesta:
-    ```json
-    {
-      "isAuthenticated": true,
-      "user": { "id": "...", "email": "...", "name": "...", "lastName": "...", "phone": "..." }
-    }
     ```
 
 - POST `/api/logout`
@@ -180,48 +172,30 @@ A menos que se indique, el Content-Type es `application/json`.
   - Cookies: No
   - Body (JSON):
     ```json
-    { "name": "Collar", "description": "Collar de nylon", "price": 1200 }
+      {
+         "name": "Alimento para Conejo",
+         "description": "Alimento balanceado para conejo adultos de todas las razas.",
+         "price": 25.99,
+         "image": "src/assets/alimento_perro_adulto.png",
+         "category": "Alimentos"
+     }
     ```
 
 ### 🧾 Pedidos (`/api/pedido`)
 - POST `/api/pedido/create`
   - Cookies: Sí (requiere `accessToken`)
-  - Body (JSON):
-    ```json
-    {
-      "userId": "<id-de-usuario-o-ref>",
-      "items": [ { "sku": "ABC", "qty": 1, "price": 100 } ],
-      "total": 100,
-      "userPhone": 11223344
-    }
-    ```
-  - Respuesta:
-    ```json
-    { "message": "Pedido creado", "pedidoId": 1 }
-    ```
+    - Body (JSON):
+      ```json
+      {
+       "userId": "68e65ad018cdc0eba402c173",
+       "items": ["alimento"],
+       "total": 18.000
+      }
+      ```
+- GET `/api/pedido`
+  - Cookies: No
+  - Trae todos los pedidos
 
-## 🧪 Ejemplos de uso con curl
-- Login (guarda cookie en `cookies.txt`):
-```
-curl -i -X POST http://localhost:3000/api/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"Password1"}' \
-  -c cookies.txt
-```
-- Estado de auth (envía cookie):
-```
-curl -i http://localhost:3000/api/auth/status -b cookies.txt
-```
-- Crear producto:
-```
-curl -i -X POST http://localhost:3000/api/productos/create \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Collar","description":"Collar de nylon","price":1200}'
-```
-- Crear pedido (requiere cookie de login):
-```
-curl -i -X POST http://localhost:3000/api/pedido/create \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"123","items":[{"sku":"ABC","qty":1,"price":100}],"total":100,"userPhone":11223344}' \
-  -b cookies.txt
-```
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles
