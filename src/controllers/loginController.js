@@ -1,6 +1,4 @@
 import {loginService} from "../services/loginService.js";
-import logger from "../core/logger.js";
-import util from "util";
 
 
 
@@ -29,10 +27,8 @@ export const login = async (req, res) => {
 
 export const checkAuthStatus = async (req, res) => {
     try {
-        // Si el middleware verifyTokenMiddleware tuvo éxito, req.user ya está poblado.
-        // Simplemente devolvemos la información del usuario al frontend.
         const user = req.user;
-        // logger.info(util.inspect(user, { showHidden: false, depth: null, colors: false }));
+
         return res.status(200).json({
             isAuthenticated: true,
             user: {
@@ -52,9 +48,9 @@ export const logout = (req, res) => {
     try {
         res.clearCookie('accessToken', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Debe ser true en producción
+            secure: process.env.NODE_ENV === 'production',
             path: '/',
-            sameSite: 'none', // Cambiado de 'strict' a 'none' para cross-domain
+            sameSite: 'none',
             maxAge: 1000 * 60 * 60 // 1 hora
         });
         return res.status(200).json({ message: "Logged out successfully" });

@@ -1,7 +1,6 @@
 import winston from 'winston';
 import { Transform } from 'stream';
 
-// Configuración simple que muestra todos los niveles
 const logger = winston.createLogger({
     level: 'debug',
     format: winston.format.combine(
@@ -20,7 +19,6 @@ const logger = winston.createLogger({
     ]
 });
 
-// Forzar la salida de logs a stdout/stderr
 const logToStdout = new Transform({
     transform(chunk, encoding, callback) {
         process.stdout.write(chunk);

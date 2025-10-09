@@ -1,15 +1,14 @@
 import productModel from "../models/productModel.js";
 import logger from "../core/logger.js";
 
-export const getProductos = async (page = 1, limit = 10) => {
+export const getProductosService = async (page = 1, limit = 10) => {
     try {
         const options = {
             page: parseInt(page, 10),
             limit: parseInt(limit, 10)
         };
 
-        const productos = await productModel.paginate({}, options);
-        return productos;
+        return await productModel.paginate({}, options);
     } catch (error) {
         throw new Error("Error al obtener los productos: " + error.message);
     }

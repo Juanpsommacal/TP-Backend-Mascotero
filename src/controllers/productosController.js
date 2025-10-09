@@ -1,4 +1,4 @@
-import { createProductoService, getProductos as getProductosService } from "../services/productosService.js";
+import { createProductoService, getProductosService } from "../services/productosService.js";
 
 export const getProductos = async (req, res) => {
     try {
@@ -15,13 +15,11 @@ export const getProductos = async (req, res) => {
 
 export const createProducto = async (req, res) => {
     try {
-        // Pasamos todo el body directamente al servicio.
         const productoData = req.body;
         const result = await createProductoService(productoData);
 
         return res.status(201).json(result);
     } catch (err) {
-        // Usamos err.message para un mensaje de error más claro.
         return res.status(500).json({ message: err.message });
     }
 };

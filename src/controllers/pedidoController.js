@@ -1,5 +1,5 @@
 import Pedido from "../models/pedidoModel.js";
-import {createPedidoService} from "../services/pedidoService.js";
+import {createPedidoService, getPedidosService} from "../services/pedidoService.js";
 
 
 export const createPedido = async (req, res) => {
@@ -17,7 +17,7 @@ export const createPedido = async (req, res) => {
 
 export const getPedidos = async (req, res) => {
     try {
-        const pedidos = await Pedido.find({}).populate('userId', 'name lastName email phone');
+        const pedidos = await getPedidosService()
         return res.status(200).json(pedidos);
     } catch (error) {
         console.log(error.message);
